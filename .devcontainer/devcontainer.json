@@ -3,9 +3,16 @@
   "image": "mcr.microsoft.com/devcontainers/universal:2",
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "version": "latest"
-    }
+      "version": "latest",
+      "enableNonRootDocker": "true"
+    },
+    "ghcr.io/devcontainers/features/kubectl:1": {},
+    "ghcr.io/devcontainers/features/terraform:1": {}
   },
-  "forwardPorts": [8080, 11434],
-  "remoteUser": "codespace"
+  "hostRequirements": {
+    "cpus": 4
+  },
+  "postCreateCommand": "docker --version && terraform --version",
+  "remoteUser": "codespace",
+  "forwardPorts": [8080, 11434]
 }
