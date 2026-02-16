@@ -1,13 +1,14 @@
 README.md
 # 🛡️ CloudRanger Prime: Autonomous Sentinel
 
-![Status](https://img.shields.io/badge/Status-Active-success)
-![Platform](https://img.shields.io/badge/Platform-Kubernetes%20%7C%20Minikube-blue)
-![Language](https://img.shields.io/badge/Language-Python%203.9-yellow)
-![Focus](https://img.shields.io/badge/Focus-DevSecOps%20%7C%20Automation-red)
+![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge&logo=kubernetes)
+![Platform](https://img.shields.io/badge/Platform-Kubernetes%20%7C%20Minikube-blue?style=for-the-badge&logo=linux)
+![Language](https://img.shields.io/badge/Language-Python%203.9-yellow?style=for-the-badge&logo=python)
+![Focus](https://img.shields.io/badge/Focus-DevSecOps%20%7C%20Automation-red?style=for-the-badge&logo=security-scorecard)
 
 > **"The system that heals itself."**
-> An autonomous Kubernetes defense agent that detects corrupted financial transactions and neutralizes compromised pods in real-time.
+>
+> An autonomous Kubernetes defense agent that detects corrupted financial transactions and neutralizes compromised pods in real-time (< 0.5s reaction time).
 
 ---
 
