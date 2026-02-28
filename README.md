@@ -40,7 +40,7 @@ graph TD;
     C -- "Delete Pod Command" --> D[Kubernetes API];
     D -- "SIGKILL" --> A;
     E[ReplicaSet] -- "Auto-Healing" --> A;
-```
+
 
 ---
 
