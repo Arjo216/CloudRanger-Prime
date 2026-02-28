@@ -33,14 +33,14 @@ Instead of waiting for a human engineer to read logs and restart the server, the
 
 ## 🏗️ Architecture
 
-\`\`\`mermaid
+```mermaid
 graph TD;
     A[Financial Node (Victim)] -- Generates Logs --> B(Log Stream);
     B -- "Poison Data Detected" --> C[Sentinel Agent (Python)];
     C -- "Delete Pod Command" --> D[Kubernetes API];
     D -- "SIGKILL" --> A;
     E[ReplicaSet] -- "Auto-Healing" --> A;
-\`\`\`
+```
 
 ---
 
@@ -63,24 +63,24 @@ graph TD;
 * `pip install kubernetes streamlit`
 
 ### 1. Launch the Cluster
-\`\`\`bash
+```bash
 minikube start
 eval \$(minikube docker-env)
-\`\`\`
+```
 
 ### 2. Deploy the "Victim" (Financial Node)
-\`\`\`bash
+```bash
 # Build the image inside the cluster
 docker build -t financial-node:v1 src/financial-node/
 
 # Deploy to Kubernetes
 kubectl run financial-ledger --image=financial-node:v1 --image-pull-policy=Never --labels="run=financial-ledger"
-\`\`\`
+```
 
 ### 3. Activate the Sentinel
-\`\`\`bash
+```bash
 python3 src/agent/sentinel.py
-\`\`\`
+```
 
 ---
 
@@ -88,7 +88,7 @@ python3 src/agent/sentinel.py
 
 The core logic relies on the Kubernetes `watch` stream to react instantly to log events.
 
-\`\`\`python
+```python
 # simplified_sentinel.py
 for event in w.stream(v1.list_pod_for_all_namespaces, label_selector="run=financial-ledger"):
     logs = v1.read_namespaced_pod_log(name=pod_name, namespace=namespace)
@@ -97,7 +97,7 @@ for event in w.stream(v1.list_pod_for_all_namespaces, label_selector="run=financ
         print(f"🚨 THREAT DETECTED: {pod_name}")
         v1.delete_namespaced_pod(name=pod_name, namespace=namespace)
         print("✅ TARGET NEUTRALIZED.")
-\`\`\`
+```
 
 ---
 
