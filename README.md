@@ -8,7 +8,7 @@ README.md
 
 > **"The system that heals itself."**
 >
-> An autonomous Kubernetes defense agent that detects corrupted financial transactions and neutralizes compromised pods in real-time (< 0.5s reaction time).
+> An autonomous Kubernetes defense agent that detects corrupted financial transactions and neutralizes compromised pods in real-time (< 2s reaction time).
 
 ---
 
@@ -26,7 +26,7 @@ Instead of waiting for a human engineer to read logs and restart the server, the
 3.  **Executes** a `SIGKILL` command via the Kubernetes API.
 4.  **Verifies** that the Cluster Auto-Healer spawns a fresh, clean replacement.
 
-**Reaction Time:** < 0.5 Seconds.
+**Reaction Time:** < 2 Seconds.
 **Human Intervention:** 0.
 
 ---
