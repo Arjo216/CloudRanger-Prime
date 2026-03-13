@@ -34,12 +34,58 @@ Instead of waiting for a human engineer to read logs and restart the server, the
 ## 🏗️ Architecture
 
 ```mermaid
-graph TD;
-    A[Financial Node (Victim)] -- Generates Logs --> B(Log Stream);
-    B -- "Poison Data Detected" --> C[Sentinel Agent (Python)];
-    C -- "Delete Pod Command" --> D[Kubernetes API];
-    D -- "SIGKILL" --> A;
-    E[ReplicaSet] -- "Auto-Healing" --> A;
+flowchart TB
+    %% --- GLOBAL STYLING & CYBERPUNK THEME ---
+    style K8S fill:#0d1117,stroke:#30363d,stroke-width:2px,rx:15,ry:15
+    style POD fill:#21262d,stroke:#f85149,stroke-width:2px,stroke-dasharray: 5 5,rx:10,ry:10
+    style COMMAND fill:#0d1117,stroke:#2ea043,stroke-width:2px,rx:15,ry:15
+
+    classDef app fill:#161b22,stroke:#f85149,stroke-width:2px,color:#f85149
+    classDef logs fill:#161b22,stroke:#d29922,stroke-width:2px,color:#e3b341
+    classDef api fill:#161b22,stroke:#58a6ff,stroke-width:2px,color:#79c0ff
+    classDef healer fill:#161b22,stroke:#2ea043,stroke-width:2px,color:#56d364
+    classDef brain fill:#000000,stroke:#3fb950,stroke-width:3px,color:#3fb950
+    classDef ui fill:#161b22,stroke:#a371f7,stroke-width:2px,color:#bc8cff
+
+    %% --- INFRASTRUCTURE LAYER ---
+    subgraph K8S [☸️ Kubernetes Cluster Environment]
+        API[⚙️ K8s API Server]:::api
+        RS[🔄 ReplicaSet / Auto-Healer]:::healer
+        
+        subgraph POD [🚨 Compromised Target Pod]
+            APP[🏦 Financial Ledger App <br/> Vulnerable Node]:::app
+            STREAM[(📜 stdout / Log Stream)]:::logs
+        end
+        
+        APP -->|Generates Tx| STREAM
+        RS -.->|Detects Pod Death & <br/> Respawns Clean Image| APP
+        API ==>|Executes SIGKILL| APP
+    end
+
+    %% --- CONTROL PLANE LAYER ---
+    subgraph COMMAND [🛡️ CloudRanger Command Center]
+        AGENT{🤖 Python Sentinel Agent <br/> The Brain}:::brain
+        UI[📊 Streamlit UI <br/> Telemetry]:::ui
+    end
+
+    %% --- INTER-SYSTEM COMMUNICATION ---
+    STREAM -.->|K8s Watch API <br/> Real-time Log Tailing| AGENT
+    AGENT ==>|1. Detects 'POISON DATA' ☣️ <br/> 2. Triggers Neutralization| API
+    AGENT -->|Pushes Threat Metrics| UI
+
+    %% --- PATHWAY HIGHLIGHTS (COLOR CODING) ---
+    %% 0: App to Stream (Standard)
+    linkStyle 0 stroke:#8b949e,stroke-width:2px
+    %% 1: Healer to App (Green Recovery)
+    linkStyle 1 stroke:#2ea043,stroke-width:3px,stroke-dasharray: 5 5,color:#56d364
+    %% 2: API to App (Red Kill Execution)
+    linkStyle 2 stroke:#f85149,stroke-width:4px,color:#f85149
+    %% 3: Stream to Agent (Yellow Monitoring)
+    linkStyle 3 stroke:#d29922,stroke-width:2px,stroke-dasharray: 5 5,color:#e3b341
+    %% 4: Agent to API (Red Alert Trigger)
+    linkStyle 4 stroke:#f85149,stroke-width:3px,color:#f85149
+    %% 5: Agent to UI (Purple Telemetry)
+    linkStyle 5 stroke:#a371f7,stroke-width:2px,color:#bc8cff
 ```
 
 ---
